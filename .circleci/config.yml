@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  bridgecrew: bridgecrew/checkov@0.1.1
+  bridgecrew: bridgecrew/bridgecrew@1.0.5
 
 jobs:
   checkov:
