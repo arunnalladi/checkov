@@ -1,0 +1,35 @@
+version: 2.1
+
+orbs:
+  secrets-scanner-orb: atul/secrets-scanner-orb@0.0.2
+
+jobs:
+  checkov:
+    docker:
+      - image: circleci/python:3.9
+    working_directory: /tmp/workspace
+    environment:
+      ENV_FILE: /tmp/workspace/
+      DOCKER_BUILDKIT: "1"
+      BUILDKIT_PROGRESS: plain
+    steps:
+      - checkout
+      - attach_workspace:
+         at: /tmp/workspace
+
+      - run:
+          name: Install checkov
+          command: |
+           sudo apt update
+           pip install -U checkov
+         
+      - run:
+          name: Dockerfile Static Scanning
+          command: |
+            checkov --f ./Dockerfile
+
+workflows:
+  version: 2
+  checkov:
+    jobs:
+      - checkov
