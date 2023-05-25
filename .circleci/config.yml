@@ -1,12 +1,12 @@
 version: 2.1
 
 orbs:
-  secrets-scanner-orb: atul/secrets-scanner-orb@0.0.2
+  bridgecrew: bridgecrew/checkov@0.1.1
 
 jobs:
   checkov:
     docker:
-      - image: circleci/python:3.9
+      - image: bridgecrew/checkov:latest
     working_directory: /tmp/workspace
     environment:
       ENV_FILE: /tmp/workspace/
@@ -23,13 +23,22 @@ jobs:
            sudo apt update
            pip install -U checkov
          
+      #- run:
+      #    name: Dockerfile Static Scanning
+      #    command: |
+      #      checkov -d . --bc-api-key $CHECKOV --repo-id $CIRCLE_PROJECT_REPONAME --branch $CIRCLE_BRANCH
+
       - run:
-          name: Dockerfile Static Scanning
+          name: Run Checkov
           command: |
-            checkov --directory ./tests/
+            export BC_API_KEY=$BC_API_KEY 
+            export REPO_ID=$CIRCLE_PROJECT_REPONAME
+            export BRANCH=$CIRCLE_BRANCH
+            checkov -d . --bc-api-key $BC_API_KEY --repo-id $REPO_ID --branch $BRANCH            
 
 workflows:
   version: 2
   checkov:
     jobs:
-      - checkov
+      - checkov:
+         context: McCain-dev
