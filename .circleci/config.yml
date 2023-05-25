@@ -26,7 +26,7 @@ jobs:
       - run:
           name: Dockerfile Static Scanning
           command: |
-            checkov --f ./Dockerfile
+            checkov --file ./Dockerfile
 
 workflows:
   version: 2
