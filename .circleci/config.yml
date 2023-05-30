@@ -21,11 +21,6 @@ jobs:
           name: Install checkov
           command: |
            pip install -U checkov
-         
-      #- run:
-      #    name: Dockerfile Static Scanning
-      #    command: |
-      #      checkov -d . --bc-api-key $CHECKOV --repo-id $CIRCLE_PROJECT_REPONAME --branch $CIRCLE_BRANCH
 
       - run:
           name: Run Checkov
